@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScopeX Indicator Manual Book</title>
+    <style>
+        :root {
+            --dark-bg: #121212;
+            --card-bg: #1e1e2d;
+            --accent: #8a2be2;
+            --accent-light: #b388ff;
+            --text: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #2c1e4a, #1a1a2e);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--accent-light), #6a5acd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(138, 43, 226, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #2d2d3a;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent);
+        }
+        
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent);
+            color: var(--accent-light);
+        }
+        
+        .indicator-item {
+            margin-bottom: 25px;
+        }
+        
+        .indicator-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .indicator-title h3 {
+            font-size: 1.2rem;
+            color: var(--accent-light);
+        }
+        
+        .indicator-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(138, 43, 226, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .value {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        
+        .status-bullish {
+            background-color: rgba(76, 175, 80, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        
+        .status-bearish {
+            background-color: rgba(244, 67, 54, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        
+        .status-neutral {
+            background-color: rgba(255, 152, 0, 0.15);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+        
+        .status-high {
+            background-color: rgba(33, 150, 243, 0.15);
+            color: var(--info);
+            border: 1px solid var(--info);
+        }
+        
+        .usage-guide {
+            background-color: rgba(138, 43, 226, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .strategy-section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .strategy-card {
+            background: linear-gradient(145deg, #252540, #1c1c2d);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #2d2d3a;
+        }
+        
+        .strategy-card.long {
+            border-top: 4px solid var(--success);
+        }
+        
+        .strategy-card.short {
+            border-top: 4px solid var(--danger);
+        }
+        
+        .strategy-card.avoid {
+            border-top: 4px solid var(--warning);
+        }
+        
+        .strategy-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .strategy-card.long h3 {
+            color: var(--success);
+        }
+        
+        .strategy-card.short h3 {
+            color: var(--danger);
+        }
+        
+        .strategy-card.avoid h3 {
+            color: var(--warning);
+        }
+        
+        .strategy-icon {
+            margin-right: 12px;
+            font-size: 1.6rem;
+        }
+        
+        .example-section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .example-table th {
+            background-color: var(--accent);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .example-table td {
+            padding: 15px;
+            border-bottom: 1px solid #2d2d3a;
+        }
+        
+        .example-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .example-table .value {
+            background: transparent;
+            padding: 0;
+            border-left: none;
+        }
+        
+        .conclusion {
+            text-align: center;
+            margin: 50px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #2c1e4a, #1a1a2e);
+            border-radius: 15px;
+        }
+        
+        .btn-download {
+            display: inline-block;
+            background: linear-gradient(to right, var(--accent), #6a5acd);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+        
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(138, 43, 226, 0.6);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid #2d2d3a;
+            margin-top: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .strategy-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ScopeX Manual Book</h1>
+        <p class="subtitle">Panduan Lengkap Membaca Statistik Trading</p>
+    </header>
+    
+    <div class="container">
+        <!-- Trading Style -->
+        <div class="card">
+            <h2>Trading Style</h2>
+            <div class="indicator-item">
+                <div class="indicator-title">
+                    <div class="indicator-icon">🚀</div>
+                    <h3>Deskripsi</h3>
+                </div>
+                <p>Mode strategi yang digunakan untuk trading.</p>
+                
+                <div class="value">Value: Scalping, Intraday, Swing</div>
+                
+                <p><strong>Status:</strong></p>
+                <ul>
+                    <li><span class="status status-high">Fast</span> (Scalping): Entry/exit dalam hitungan menit</li>
+                    <li><span class="status status-neutral">Medium</span> (Intraday): Hold beberapa jam</li>
+                    <li><span class="status status-neutral">Slow</span> (Swing): Hold harian/mingguan</li>
+                </ul>
+                
+                <div class="usage-guide">
+                    <strong>📌 Cara Pakai:</strong> 
+                    <p>Pilih mode sesuai profil risiko: Scalping untuk risiko tinggi, Swing untuk risiko rendah.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EMA Fast -->
+        <div class="card">
+            <h2>EMA Fast</h2>
+            <div class="indicator-item">
+                <div class="indicator-title">
+                    <div class="indicator-icon">📈</div>
+                    <h3>Deskripsi</h3>
+                </div>
+                <p>Exponential Moving Average periode pendek.</p>
+                
+                <div class="value">Value: Angka harga (contoh: 3337.60)</div>
+                
+                <p><strong>Status:</strong></p>
+                <ul>
+                    <li><span class="status status-bullish">Bullish</span> → EMA Fast > EMA Slow</li>
+                    <li><span class="status status-bearish">Bearish</span> → EMA Fast < EMA Slow</li>
+                </ul>
+                
+                <div class="usage-guide">
+                    <strong>📌 Cara Pakai:</strong> 
+                    <p>Entry LONG jika status <span class="status status-bullish">Bullish</span> + harga di atas EMA Fast.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EMA Slow -->
+        <div class="card">
+            <h2>EMA Slow</h2>
+            <div class="indicator-item">
+                <div class="indicator-title">
+                    <div class="indicator-icon">📉</div>
+                    <h3>Deskripsi</h3>
+                </div>
+                <p>Exponential Moving Average periode panjang.</p>
+                
+                <div class="value">Value: Angka harga (contoh: 3340.65)</div>
+                
+                <p><strong>Status:</strong></p>
+                <ul>
+                    <li><span class="status status-bullish">Rising</span> → Tren naik (bias bullish)</li>
+                    <li><span class="status status-bearish">Falling</span> → Tren turun (bias bearish)</li>
+                </ul>
+                
+                <div class="usage-guide">
+                    <strong>📌 Cara Pakai:</strong> 
+                    <p>Entry SHORT jika status <span class="status status-bearish">Falling</span> + harga di bawah EMA Slow.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- RSI -->
+        <div class="card">
+            <h2>RSI (P)</h2>
+            <div class="indicator-item">
+                <div class="indicator-title">
+                    <div class="indicator-icon">⚖️</div>
+                    <h3>Deskripsi</h3>
+                </div>
+                <p>Relative Strength Index (mengukur momentum).</p>
+                
+                <div class="value">Value: 0-100 (contoh: 47.1)</div>
+                
+                <p><strong>Status:</strong></p>
+                <ul>
+                    <li><span class="status status-bullish">Oversold</span> (RSI < 30) → Potensi reversal naik</li>
+                    <li><span class="status status-bearish">Overbought</span> (RSI > 70) → Potensi reversal turun</li>
+                    <li><span class="status status-neutral">Neutral</span> → Pasar sideways</li>
+                </ul>
+                
+                <div class="usage-guide">
+                    <strong>📌 Cara Pakai:</strong> 
+                    <p>Entry LONG saat <span class="status status-bullish">Oversold</span> + konfirmasi indikator lain.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- MACD Hist -->
+        <div class="card">
+            <h2>MACD Hist</h2>
+            <div class="indicator-item">
+                <div class="indicator-title">
+                    <div class="indicator-icon">📊</div>
+                    <h3>Deskripsi</h3>
+                </div>
+                <p>Selisih antara garis MACD dan sinyalnya.</p>
+                
+                <div class="value">Value: 
+                    <ul>
+                        <li>Positif (contoh: 0.4363) → Momentum naik</li>
+                        <li>Negatif → Momentum turun</li>
+                    </ul>
+                </div>
+                
+                <p><strong>Status:</strong></p>
+                <ul>
+                    <li><span class="status status-bullish">Bullish</span> → Konfirmasi LONG</li>
+                    <li><span class="status status-bearish">Bearish</span> → Konfirmasi SHORT</li>
+                </ul>
+                
+                <div class="usage-guide">
+                    <strong>📌 Cara Pakai:</strong> 
+                    <p>Entry saat status berubah (misal: dari Bearish ke Bullish).</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Volume -->
+        <div class="card">
+            <h2>Volume</h2>
+            <div class="indicator-item">
+                <div class="indicator-title">
+                    <div class="indicator-icon">📦</div>
+                    <h3>Deskripsi</h3>
+                </div>
+                <p>Volume transaksi.</p>
+                
+                <div class="value">Value: Angka volume (contoh: 1085)</div>
+                
+                <p><strong>Status:</strong></p>
+                <ul>
+                    <li><span class="status status-high">High</span> → Validasi sinyal kuat</li>
+                    <li><span class="status status-neutral">Normal</span> → Tidak ada insiden khusus</li>
+                </ul>
+                
+                <div class="usage-guide">
+                    <strong>📌 Cara Pakai:</strong> 
+                    <p>Abaikan sinyal jika volume <span class="status status-neutral">Normal</span> + ADX <span class="status status-neutral">Weak Trend</span>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bagian 2 -->
+    <div class="container">
+        <!-- ADX -->
+        <div class="card">
+            <h2>ADX</h2>
+            <div class="indicator-item">
+                <div class="indicator-title">
+                    <div class="indicator-icon">🌪️</div>
+                    <h3>Deskripsi</h3>
+                </div>
+                <p>Average Directional Index (kekuatan tren).</p>
+                
+                <div class="value">Value: 0-100 (contoh: 17.1)</div>
+                
+                <p><strong>Status:</strong></p>
+                <ul>
+                    <li><span class="status status-high">Strong Trend</span> (ADX > 25) → Ikuti tren</li>
+                    <li><span class="status status-neutral">Weak Trend</span> (ADX < 25) → Pasar sideways</li>
+                </ul>
+                
+                <div class="usage-guide">
+                    <strong>📌 Cara Pakai:</strong> 
+                    <p><span class="status status-neutral">HOLD</span> jika status <span class="status status-neutral">Weak Trend</span> + Confidence rendah.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stochastic -->
+        <div class="card">
+            <h2>Stochastic</h2>
+            <div class="indicator-item">
+                <div class="indicator-title">
+                    <div class="indicator-icon">🎯</div>
+                    <h3>Deskripsi</h3>
+                </div>
+                <p>Indikator momentum (cepat/lambat).</p>
+                
+                <div class="value">Value: Dua angka (contoh: 66.1/72.1 = %K/%D)</div>
+                
+                <p><strong>Status:</strong></p>
+                <ul>
+                    <li><span class="status status-bearish">Overbought</span> (%K/%D > 80) → Potensi turun</li>
+                    <li><span class="status status-bullish">Oversold</span> (%K/%D < 20) → Potensi naik</li>
+                    <li><span class="status status-neutral">Neutral</span> → Tidak ada sinyal jelas</li>
+                </ul>
+                
+                <div class="usage-guide">
+                    <strong>📌 Cara Pakai:</strong> 
+                    <p>Entry SHORT saat status <span class="status status-bearish">Overbought</span> + garis %K memotong %D ke bawah.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AIR/ATR -->
+        <div class="card">
+            <h2>AIR/ATR</h2>
+            <div class="indicator-item">
+                <div class="indicator-title">
+                    <div class="indicator-icon">🌊</div>
+                    <h3>Deskripsi</h3>
+                </div>
+                <p>Average True Range (volatilitas).</p>
+                
+                <div class="value">Value: Angka volatilitas (contoh: 2.70)</div>
+                
+                <p><strong>Status:</strong></p>
+                <ul>
+                    <li><span class="status status-high">High Vol</span> → Pergerakan harga besar</li>
+                    <li><span class="status status-neutral">Low Vol</span> → Risiko false signal</li>
+                </ul>
+                
+                <div class="usage-guide">
+                    <strong>📌 Cara Pakai:</strong> 
+                    <p>Entry hanya jika status <span class="status status-high">High Vol</span> + Confidence ≥ <span class="status status-high">B</span>.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Confidence -->
+        <div class="card">
+            <h2>Confidence</h2>
+            <div class="indicator-item">
+                <div class="indicator-title">
+                    <div class="indicator-icon">🔐</div>
+                    <h3>Deskripsi</h3>
+                </div>
+                <p>Skor kepercayaan sinyal (dihitung dari 8 faktor).</p>
+                
+                <div class="value">Value: 
+                    <ul>
+                        <li>Persentase (contoh: 3%)</li>
+                        <li>Grade: SSS (terbaik) sampai F (terburuk)</li>
+                    </ul>
+                </div>
+                
+                <p><strong>Status:</strong></p>
+                <ul>
+                    <li><span class="status status-high">High</span> (≥80% / Grade S↑) → Sinyal kuat</li>
+                    <li><span class="status status-neutral">Medium</span> (60-79% / Grade A-B) → Sinyal cukup</li>
+                    <li><span class="status status-bearish">Low</span> (<60% / Grade C-F) → JANGAN entry!</li>
+                </ul>
+                
+                <div class="usage-guide">
+                    <strong>📌 Cara Pakai:</strong> 
+                    <p>Entry hanya jika Grade ≥ <span class="status status-high">B</span> (minimal 60%).</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Current Signal -->
+        <div class="card">
+            <h2>Current Signal</h2>
+            <div class="indicator-item">
+                <div class="indicator-title">
+                    <div class="indicator-icon">🚦</div>
+                    <h3>Deskripsi</h3>
+                </div>
+                <p>Rekomendasi entry saat ini.</p>
+                
+                <div class="value">Value: 
+                    <ul>
+                        <li>LONG/SHORT (jika ada sinyal)</li>
+                        <li>No Signal (tidak ada rekomendasi)</li>
+                    </ul>
+                </div>
+                
+                <p><strong>Status:</strong></p>
+                <ul>
+                    <li><span class="status status-bullish">Bullish</span>/<span class="status status-bearish">Bearish</span> → Konfirmasi arah</li>
+                    <li><span class="status status-neutral">Neutral</span> → Tunggu konfirmasi</li>
+                </ul>
+                
+                <div class="usage-guide">
+                    <strong>📌 Cara Pakai:</strong> 
+                    <p>Ikuti sinyal hanya jika <span class="status status-high">Confidence ≥ 60%</span>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Strategi -->
+    <div class="strategy-section">
+        <h2>Strategi Trading Prioritas</h2>
+        <div class="strategy-grid">
+            <div class="strategy-card long">
+                <h3><span class="strategy-icon">📈</span> Strategi LONG</h3>
+                <ul>
+                    <li>EMA Fast <span class="status status-bullish">Bullish</span> + EMA Slow <span class="status status-bullish">Rising</span></li>
+                    <li>RSI <span class="status status-bullish">Oversold</span> + MACD <span class="status status-bullish">Bullish</span></li>
+                    <li>Confidence ≥ <span class="status status-high">B</span> + Volume <span class="status status-high">High</span></li>
+                    <li>Stochastic <span class="status status-bullish">Oversold</span> + %K > %D</li>
+                    <li>ADX > 25 (tren kuat)</li>
+                </ul>
+            </div>
+            
+            <div class="strategy-card short">
+                <h3><span class="strategy-icon">📉</span> Strategi SHORT</h3>
+                <ul>
+                    <li>EMA Fast <span class="status status-bearish">Bearish</span> + EMA Slow <span class="status status-bearish">Falling</span></li>
+                    <li>RSI <span class="status status-bearish">Overbought</span> + Stochastic <span class="status status-bearish">Overbought</span></li>
+                    <li>ADX <span class="status status-high">Strong Trend</span> + Confidence ≥ <span class="status status-high">A</span></li>
+                    <li>MACD <span class="status status-bearish">Bearish</span> + Volume naik</li>
+                    <li>Harga di bawah EMA Slow</li>
+                </ul>
+            </div>
+            
+            <div class="strategy-card avoid">
+                <h3><span class="strategy-icon">⚠️</span> Kondisi JANGAN ENTRY</h3>
+                <ul>
+                    <li>Confidence = <span class="status status-bearish">F</span>/<span class="status status-neutral">D</span></li>
+                    <li>ADX = <span class="status status-neutral">Weak Trend</span> + Volume = <span class="status status-neutral">Normal</span></li>
+                    <li>EMA Fast/Slow status <span class="status status-neutral">Neutral</span></li>
+                    <li>Stochastic di tengah (40-60) + RSI netral</li>
+                    <li>ATR <span class="status status-neutral">Low Vol</span> (volatilitas rendah)</li>
+                    <li>Tampilan "<span class="status status-neutral">No Signal</span>"</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="usage-guide" style="margin-top: 30px;">
+            <strong>📌 Penting:</strong> 
+            <p>Selalu konfirmasi minimal 3 indikator sejalan! Grade Confidence adalah filter utama.</p>
+        </div>
+    </div>
+    
+    <!-- Contoh Analisis -->
+    <div class="example-section">
+        <h2>Contoh Analisis Trading</h2>
+        <p>Berikut contoh cara membaca tabel ScopeX untuk menentukan sinyal:</p>
+        
+        <table class="example-table">
+            <tr>
+                <th>Indikator</th>
+                <th>Value</th>
+                <th>Status</th>
+                <th>Analisis</th>
+            </tr>
+            <tr>
+                <td>EMA Slow</td>
+                <td>3350.00</td>
+                <td><span class="status status-bullish">Rising</span></td>
+                <td>Tren utama naik (bullish)</td>
+            </tr>
+            <tr>
+                <td>RSI</td>
+                <td>28.5</td>
+                <td><span class="status status-bullish">Oversold</span></td>
+                <td>Potensi reversal naik</td>
+            </tr>
+            <tr>
+                <td>MACD Hist</td>
+                <td>0.92</td>
+                <td><span class="status status-bullish">Bullish</span></td>
+                <td>Momentum naik</td>
+            </tr>
+            <tr>
+                <td>ADX</td>
+                <td>32.1</td>
+                <td><span class="status status-high">Strong Trend</span></td>
+                <td>Tren kuat</td>
+            </tr>
+            <tr>
+                <td>Confidence</td>
+                <td>85%</td>
+                <td><span class="status status-high">A (High)</span></td>
+                <td>Sinyal sangat valid</td>
+            </tr>
+            <tr>
+                <td>Signal</td>
+                <td>LONG</td>
+                <td><span class="status status-bullish">Bullish</span></td>
+                <td><strong>Rekomendasi: EXECUTE LONG!</strong></td>
+            </tr>
+        </table>
+        
+        <div class="usage-guide" style="margin-top: 30px;">
+            <strong>📌 Kesimpulan:</strong> 
+            <p>✅ Tren kuat (ADX > 25) + ✅ Momentum naik (RSI oversold + MACD bullish) + ✅ Confidence tinggi (Grade A) → <strong>EXECUTE LONG!</strong></p>
+        </div>
+    </div>
+    
+    <!-- Parameter Penting -->
+    <div class="strategy-section">
+        <h2>Parameter Penting</h2>
+        <div class="strategy-grid">
+            <div class="strategy-card">
+                <h3><span class="strategy-icon">⏱️</span> Delay Bars</h3>
+                <p>Jeda minimal antar sinyal untuk menghindari false signal</p>
+                <div class="value">Default: 1-5 bar</div>
+            </div>
+            
+            <div class="strategy-card">
+                <h3><span class="strategy-icon">📏</span> EMA Dist %</h3>
+                <p>Jarak minimal antara EMA Fast dan EMA Slow untuk validasi sinyal</p>
+                <div class="value">Default: 0.03% - 0.08%</div>
+            </div>
+            
+            <div class="strategy-card">
+                <h3><span class="strategy-icon">🕯️</span> Candle Dist %</h3>
+                <p>Jarak minimal antara harga dan EMA Fast untuk validasi sinyal</p>
+                <div class="value">Default: 0.02% - 0.07%</div>
+            </div>
+            
+            <div class="strategy-card">
+                <h3><span class="strategy-icon">✅</span> Min Confidence</h3>
+                <p>Batas minimal skor confidence untuk entry</p>
+                <div class="value">Default: 60% (Grade B)</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="conclusion">
+        <h2>Manual Book Siap Digunakan!</h2>
+        <p>Simpan file ini untuk referensi trading Anda. Buka di perangkat apapun kapan saja.</p>
+        <a href="#" class="btn-download" onclick="downloadManual()">💾 Simpan Manual Book</a>
+    </div>
+    
+    <footer>
+        <p>ScopeX Indicator Manual Book • © 2025 ScopeX</p>
+        <p>Untuk edukasi trading. Bukan saran finansial.</p>
+    </footer>
+
+    <script>
+        function downloadManual() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], {type: 'text/html'});
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ScopeX_Manual_Book.html';
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            alert('Manual book berhasil diunduh! Buka file HTML di perangkat Anda.');
+        }
+    </script>
+</body>
+</html>
